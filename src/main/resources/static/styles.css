@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #d6d6d6;
+    color: #ffffff;
+}
+
+h1 {
+    text-align: center;
+    color: #000000;
+}
+
+#results {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.strategy-result {
+    background-color: #707070;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.description {
+    margin: 20px;
+    text-align: center;
+    color: #000000;
+}
+
+.chart-container {
+    width: 80%;
+    margin: 0 auto;
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Wyniki Turnieju Axelroda</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Wyniki Turnieju Axelroda</h1>
+<div class="description">
+    <p>Poniżej znajdują się całkowite wyniki każdej strategii po 1000 iteracjach w Turnieju Axelroda.</p>
+    <p>Strategia z najniższym całkowitym wynikiem wypadła najlepiej.</p>
+</div>
+<div class="chart-container">
+    <canvas id="resultsChart"></canvas>
+</div>
+<div id="results"></div>
+<script>
+    fetch('/wyniki')
+        .then(response => response.json())
+        .then(data => {
+            const nazwyStrategii = data.map(entry => entry.nazwa);
+            const wyniki = data.map(entry => entry.wynik);
+
+            const maxWynik = Math.max(...wyniki);
+            const kolory = wyniki.map(wynik => wynik === maxWynik ? 'rgba(75, 192, 75, 0.2)' : 'rgba(255, 99, 132, 0.2)');
+            const obramowaniaKolory = wyniki.map(wynik => wynik === maxWynik ? 'rgba(75, 192, 75, 1)' : 'rgba(255, 99, 132, 1)');
+
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: nazwyStrategii,
+                    datasets: [{
+                        label: 'Całkowity wynik',
+                        data: wyniki,
+                        backgroundColor: kolory,
+                        borderColor: obramowaniaKolory,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'black' 
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'black' 
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'black'  
+                            }
+                        }
+                    }
+                }
+            });
+            const resultsDiv = document.getElementById('results');
+            data.forEach(entry => {
+                const strategyDiv = document.createElement('div');
+                strategyDiv.classList.add('strategy-result');
+                strategyDiv.textContent = `${entry.nazwa}: całkowity wynik: ${entry.wynik}`;
+                resultsDiv.appendChild(strategyDiv);
+            });
+        });
+</script>
+</body>
+</html>
